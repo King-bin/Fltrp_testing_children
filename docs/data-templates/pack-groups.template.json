@@ -1,0 +1,26 @@
+{
+  "base": [
+    {
+      "packGroupId": "BASE_A1",
+      "name": "基础包 A1",
+      "enabled": true,
+      "stages": [
+        { "stageNo": 1, "paperId": "PAPER_BASE_A1_STAGE1" },
+        { "stageNo": 2, "paperId": "PAPER_BASE_A1_STAGE2" },
+        { "stageNo": 3, "paperId": "PAPER_BASE_A1_STAGE3" }
+      ]
+    }
+  ],
+  "advanced": [
+    {
+      "packGroupId": "ADV_B1",
+      "name": "增强包 B1",
+      "enabled": true,
+      "stages": [
+        { "stageNo": 4, "paperId": "PAPER_ADV_B1_STAGE4" },
+        { "stageNo": 5, "paperId": "PAPER_ADV_B1_STAGE5" },
+        { "stageNo": 6, "paperId": "PAPER_ADV_B1_STAGE6" }
+      ]
+    }
+  ]
+}

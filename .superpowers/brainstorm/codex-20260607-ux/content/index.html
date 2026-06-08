@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>外研定级测幼儿版 - H5范围确认</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      background: #f4f7ef;
+      color: #203322;
+    }
+    main {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 40px 0;
+    }
+    h1 { margin: 0 0 12px; font-size: 32px; }
+    .subtitle { margin: 0 0 24px; color: #596b5d; line-height: 1.7; font-size: 16px; }
+    .options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .option {
+      min-height: 260px;
+      padding: 22px;
+      border: 3px solid #d9e5d1;
+      border-radius: 18px;
+      background: #fffdf6;
+      box-shadow: 0 10px 24px rgba(46, 93, 57, .12);
+      cursor: pointer;
+      transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .option:hover { transform: translateY(-3px); border-color: #8fbf73; }
+    .option.selected {
+      border-color: #ffb433;
+      box-shadow: 0 12px 28px rgba(255, 172, 50, .26);
+    }
+    .letter {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: linear-gradient(#7fdb5d, #3f9a28);
+      color: white;
+      font-size: 22px;
+      font-weight: 900;
+      box-shadow: inset 0 2px rgba(255,255,255,.35), 0 4px #2d7c1f;
+    }
+    h2 { margin: 18px 0 10px; font-size: 22px; }
+    p { line-height: 1.75; }
+    .note {
+      margin-top: 24px;
+      padding: 18px 20px;
+      border-radius: 14px;
+      background: #eaf4df;
+      border: 1px solid #c8dfb9;
+    }
+    @media (max-width: 820px) {
+      .options { grid-template-columns: 1fr; }
+      main { width: min(680px, calc(100% - 28px)); padding: 24px 0; }
+      h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>先确认第一期 H5 的开发范围</h1>
+    <p class="subtitle">我已读到：强制横屏 H5、后续嵌入微信小程序、首页/地图/关卡/题型/完成页素材、4 类题型、登录与学段采集、音频/录音桥接、后台配置与报告。下面三种路线会影响我们接下来写规格和实现计划的粒度。</p>
+
+    <div class="options">
+      <section class="option" onclick="selectOption(this)">
+        <div class="letter">A</div>
+        <h2>推荐：H5 MVP 可跑测评流程</h2>
+        <p>用现有素材先做一个横屏 H5：首页、地图、关卡导言、基础包答题、80% 分流、完成页；题目数据用本地 mock，接口层预留给后端和小程序嵌入。</p>
+      </section>
+
+      <section class="option" onclick="selectOption(this)">
+        <div class="letter">B</div>
+        <h2>UI 高保真演示优先</h2>
+        <p>重点还原效果图和题型组件视觉，做可点击演示，不急着完成真实测评状态机、录音上传、分流结算和断点恢复。</p>
+      </section>
+
+      <section class="option" onclick="selectOption(this)">
+        <div class="letter">C</div>
+        <h2>生产底座优先</h2>
+        <p>一开始就按正式工程搭建：登录、权限、AudioService、接口适配、缓存、埋点、异常弹窗、小程序 WebView 桥接都纳入第一期，视觉还原同步推进。</p>
+      </section>
+    </div>
+
+    <div class="note">
+      <strong>我当前的初步判断：</strong>
+      A 最适合作为第一阶段：能尽快把已有 UI 资产变成可体验产品，同时不会把后端、报告、后台和语音引擎的不确定性全压到第一版里。B 太像样机，后续返工风险高；C 更稳但周期会明显拉长。
+    </div>
+  </main>
+
+  <script>
+    function selectOption(el) {
+      document.querySelectorAll('.option').forEach(item => item.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+  </script>
+</body>
+</html>

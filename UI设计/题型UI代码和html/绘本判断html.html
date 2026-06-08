@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>绘本判断 UI 高保真互动版</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800&display=swap');
+
+  :root {
+    --bg-color: #72A933;
+    --text-color: #5E4633;
+    --book-yellow: #F4C438;
+    --book-yellow-dark: #E29413;
+    --page-color: #FFFDF4;
+    --page-shadow: #E2DCC9;
+    --wood-color: #924B15;
+    --wood-dark: #64310A;
+    --btn-green: #37C253;
+    --btn-green-shadow: #219B37;
+    --btn-blue: #1C84FC;
+    --btn-blue-shadow: #0C61C8;
+    --btn-orange: #FF9B26;
+    --btn-orange-light: #FFBB4A;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  body {
+    background-color: var(--bg-color);
+    font-family: 'Nunito', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* 核心容器：保持 16:9 横屏比例并自动缩放 */
+  .app-container {
+    position: relative;
+    width: 100vw;
+    height: 56.25vw; /* 16:9 ratio */
+    max-height: 100vh;
+    max-width: 177.78vh;
+    background-color: var(--bg-color);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ================= 顶部返回按钮 ================= */
+  .back-btn {
+    position: absolute;
+    top: 4%;
+    left: 2%;
+    width: 4.5%;
+    aspect-ratio: 1/1;
+    background: #FFF;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 0.3vw 0 #5E8F29, inset 0 -0.2vw 0.5vw rgba(0,0,0,0.1);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    transition: transform 0.1s;
+  }
+  .back-btn:active {
+    transform: scale(0.95) translateY(0.2vw);
+    box-shadow: 0 0.1vw 0 #5E8F29;
+  }
+  .back-btn svg {
+    width: 50%;
+    fill: #2B9582;
+  }
+
+  /* ================= 中间绘本区域 ================= */
+  .book-area {
+    position: absolute;
+    top: 13%;
+    width: 62%;
+    height: 54%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  /* 底部木托盘 */
+  .wood-base {
+    position: absolute;
+    bottom: -3%;
+    width: 50%;
+    height: 8%;
+    background: linear-gradient(to bottom, var(--wood-color), var(--wood-dark));
+    border-radius: 50%;
+    box-shadow: 0 1vw 1.5vw rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+
+  /* 绘本外壳 (黄色部分) */
+  .book-cover {
+    position: relative;
+    width: 100%;
+    height: 95%;
+    background: linear-gradient(to bottom, #F9D85A, #F0A51D);
+    border-radius: 1vw;
+    box-shadow: 0 0.8vw 0 var(--book-yellow-dark), 0 1.5vw 2vw rgba(0,0,0,0.15);
+    display: flex;
+    padding: 0.5vw 0.8vw 1.2vw 0.8vw;
+    z-index: 2;
+  }
+
+  /* 书页 */
+  .page {
+    flex: 1;
+    background-color: var(--page-color);
+    position: relative;
+    border-radius: 0.5vw;
+    box-shadow: inset 0 0 1vw rgba(0,0,0,0.03);
+  }
+
+  .page.left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: inset -1vw 0 1vw -0.5vw rgba(0,0,0,0.1), 0 0.4vw 0 var(--page-shadow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .page.right {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: inset 1vw 0 1vw -0.5vw rgba(0,0,0,0.1), 0 0.4vw 0 var(--page-shadow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* 中缝 */
+  .spine {
+    position: absolute;
+    left: 50%;
+    top: 0.5vw;
+    bottom: 1.2vw;
+    width: 2vw;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, transparent, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.05) 60%, transparent);
+    z-index: 3;
+    pointer-events: none;
+  }
+  .spine-bottom {
+    position: absolute;
+    bottom: 0.5vw;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2.5vw;
+    height: 1vw;
+    background-color: var(--page-shadow);
+    border-radius: 50%;
+    z-index: 3;
+  }
+
+  /* 左页：插图框 */
+  .illustration-frame {
+    width: 80%;
+    height: 80%;
+    background: #FFF;
+    border-radius: 0.5vw;
+    border: 0.1vw solid #EBE4D5;
+    box-shadow: inset 0 0 0.5vw rgba(0,0,0,0.02);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  /* 书桌阴影 */
+  .desk-shadow {
+    position: absolute;
+    bottom: 12%;
+    width: 70%;
+    height: 10%;
+    background: rgba(0,0,0,0.06);
+    border-radius: 50%;
+    transform: skewX(-20deg);
+  }
+
+  /* 书桌 SVG */
+  .desk-svg {
+    width: 75%;
+    height: 75%;
+    z-index: 2;
+  }
+
+  /* 右页：文本与书签 */
+  .bookmark {
+    position: absolute;
+    top: -0.5vw;
+    right: 15%;
+    width: 8%;
+    height: 25%;
+    background: #55B562;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+    display: flex;
+    justify-content: center;
+    padding-top: 15%;
+    z-index: 4;
+  }
+  .bookmark svg {
+    width: 50%;
+    fill: #FFD238;
+  }
+
+  .question-text {
+    font-size: 2.4vw;
+    color: var(--text-color);
+    font-weight: 800;
+  }
+
+  /* 闪光星星点缀 */
+  .sparkle {
+    position: absolute;
+    fill: #FFDF6B;
+    z-index: 10;
+  }
+  .sp-1 { width: 1.5vw; bottom: 8%; left: -2%; }
+  .sp-2 { width: 1vw; bottom: 5%; left: 3%; }
+  .sp-3 { width: 1.2vw; bottom: 12%; right: 7%; }
+  .sp-4 { width: 0.8vw; bottom: 8%; right: 4%; }
+
+  /* ================= 底部判断按钮 ================= */
+  .actions-area {
+    position: absolute;
+    bottom: 10%;
+    width: 32%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .action-btn-wrapper {
+    width: 46%;
+    aspect-ratio: 2.2/1;
+    background: #EAF4E2;
+    border-radius: 5vw;
+    padding: 0.4vw;
+    box-shadow: 0 0.6vw 0px rgba(0,0,0,0.1);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s;
+  }
+  .action-btn-wrapper.wrong-wrap {
+    background: #E8F0FC;
+  }
+
+  .action-btn {
+    width: 100%;
+    height: 100%;
+    border-radius: 4vw;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+  }
+
+  .btn-correct {
+    background: var(--btn-green);
+    box-shadow: 0 0.5vw 0 var(--btn-green-shadow), inset 0 0.8vw 0.5vw rgba(255,255,255,0.4);
+  }
+  .btn-wrong {
+    background: var(--btn-blue);
+    box-shadow: 0 0.5vw 0 var(--btn-blue-shadow), inset 0 0.8vw 0.5vw rgba(255,255,255,0.4);
+  }
+
+  /* 按钮高光 */
+  .action-btn::before {
+    content: '';
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    right: 5%;
+    height: 40%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);
+    border-radius: 3vw;
+    pointer-events: none;
+  }
+
+  /* 按钮上的可爱图形 SVG */
+  .icon-face {
+    height: 60%;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 0.4vw;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  /* 按钮四周的星光 */
+  .btn-sp {
+    position: absolute;
+    fill: #FFF;
+    opacity: 0.8;
+  }
+  .btn-sp-1 { width: 0.8vw; top: 15%; left: 10%; }
+  .btn-sp-2 { width: 0.6vw; bottom: 20%; right: 10%; }
+
+
+  /* ================= 酷炫交互动效样式 ================= */
+  
+  /* 1. 点击按下瞬时缩放缩水厚度 */
+  .action-btn:active {
+    transform: scale(0.94);
+  }
+  .btn-correct:active {
+    box-shadow: 0 0.1vw 0 var(--btn-green-shadow), inset 0 0.2vw 0.5vw rgba(0,0,0,0.2);
+  }
+  .btn-wrong:active {
+    box-shadow: 0 0.1vw 0 var(--btn-blue-shadow), inset 0 0.2vw 0.5vw rgba(0,0,0,0.2);
+  }
+
+  /* 2. 选中后的状态 (外围包裹框放大与呼吸发光) */
+  .action-btn-wrapper.is-selected {
+    transform: scale(1.08);
+    z-index: 5;
+  }
+  
+  .action-btn-wrapper.is-selected.correct-wrap {
+    box-shadow: 0 0 2vw rgba(55, 194, 83, 0.6), 0 0.6vw 0px rgba(0,0,0,0.15);
+    animation: wrapper-bounce 0.4s ease-out;
+  }
+  .action-btn-wrapper.is-selected.wrong-wrap {
+    box-shadow: 0 0 2vw rgba(28, 132, 252, 0.6), 0 0.6vw 0px rgba(0,0,0,0.15);
+    animation: wrapper-shake 0.4s ease-in-out;
+  }
+
+  /* 3. 未被选中的另一个按钮自动变淡半透明 */
+  .action-btn-wrapper.is-dimmed {
+    opacity: 0.45;
+    transform: scale(0.92);
+  }
+
+  /* 4. 选中后内部图标的专属炫酷动画 */
+  .action-btn-wrapper.is-selected .btn-correct .icon-face {
+    animation: icon-celebrate 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.5) forwards;
+  }
+  .action-btn-wrapper.is-selected .btn-wrong .icon-face {
+    animation: icon-cross-spin 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+  }
+
+  /* 5. 动态粒子(爆炸星星)样式 */
+  .click-particle {
+    position: absolute;
+    pointer-events: none;
+    fill: #FFF;
+    z-index: 100;
+    animation: particle-fly 0.6s cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
+  }
+  
+  .particle-star-gold {
+    fill: #FFD238;
+  }
+  .particle-star-cyan {
+    fill: #26FFF6;
+  }
+
+  /* ================= 动画关键帧 ================= */
+  @keyframes wrapper-bounce {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.15); }
+    70% { transform: scale(1.05); }
+    100% { transform: scale(1.08); }
+  }
+
+  @keyframes wrapper-shake {
+    0%, 100% { transform: scale(1.08) translateX(0); }
+    20%, 60% { transform: scale(1.08) translateX(-0.5vw); }
+    40%, 80% { transform: scale(1.08) translateX(0.5vw); }
+  }
+
+  @keyframes icon-celebrate {
+    0% { transform: scale(1) translateY(0); }
+    30% { transform: scale(1.3) translateY(-1vw) rotate(-10deg); }
+    50% { transform: scale(1.3) translateY(-1vw) rotate(10deg); }
+    70% { transform: scale(1.1) translateY(0) rotate(0); }
+    100% { transform: scale(1.1) translateY(0); }
+  }
+
+  @keyframes icon-cross-spin {
+    0% { transform: scale(1) rotate(0); }
+    50% { transform: scale(1.2) rotate(180deg); }
+    100% { transform: scale(1.1) rotate(180deg); }
+  }
+
+  @keyframes particle-fly {
+    0% {
+      transform: translate(-50%, -50%) translate(0, 0) scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(0);
+      opacity: 0;
+    }
+  }
+
+
+  /* ================= 右下角“下一题” ================= */
+  .next-btn {
+    position: absolute;
+    bottom: 4%;
+    right: 2%;
+    background: linear-gradient(to bottom, var(--btn-orange-light), var(--btn-orange));
+    border: 0.25vw solid #FFF;
+    border-radius: 3vw;
+    padding: 0.8vw 1.5vw;
+    color: #FFF;
+    font-size: 1.4vw;
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+    cursor: pointer;
+    box-shadow: 0 0.4vw 0 #D7760A, 0 0.5vw 1vw rgba(0,0,0,0.2);
+    transition: transform 0.1s, opacity 0.3s;
+  }
+  .next-btn:active {
+    transform: scale(0.95) translateY(0.2vw);
+    box-shadow: 0 0.1vw 0 #D7760A;
+  }
+  .next-btn.is-hidden {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .next-btn svg {
+    width: 1vw;
+    fill: #FFF;
+  }
+  .next-sp {
+    position: absolute;
+    fill: #FFF;
+    width: 0.6vw;
+  }
+  .next-sp-1 { top: 20%; left: 10%; }
+  .next-sp-2 { bottom: 20%; right: 10%; opacity: 0.6;}
+
+  /* AI生成水印 */
+  .watermark {
+    position: absolute;
+    bottom: 1%;
+    right: 1%;
+    font-size: 0.8vw;
+    color: rgba(0,0,0,0.4);
+    font-weight: bold;
+  }
+
+  /* SVG 共用小星星形状 */
+  .star-symbol {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- SVG 符号定义 -->
+<svg class="star-symbol">
+  <defs>
+    <path id="star-path" d="M50 0 C50 30 70 50 100 50 C70 50 50 70 50 100 C50 70 30 50 0 50 C30 50 50 30 50 0 Z" />
+  </defs>
+</svg>
+
+<div class="app-container" id="app">
+  
+  <!-- 返回按钮 -->
+  <button class="back-btn">
+    <svg viewBox="0 0 24 24">
+      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" stroke="#2B9582" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <!-- 中间绘本主体 -->
+  <div class="book-area">
+    <div class="wood-base"></div>
+    <div class="book-cover">
+      
+      <!-- 绘本四周的闪光星星 -->
+      <svg viewBox="0 0 100 100" class="sparkle sp-1"><use href="#star-path"/></svg>
+      <svg viewBox="0 0 100 100" class="sparkle sp-2"><use href="#star-path"/></svg>
+      <svg viewBox="0 0 100 100" class="sparkle sp-3"><use href="#star-path"/></svg>
+      <svg viewBox="0 0 100 100" class="sparkle sp-4"><use href="#star-path"/></svg>
+
+      <!-- 左侧书页 -->
+      <div class="page left">
+        <div class="illustration-frame">
+          <div class="desk-shadow"></div>
+          
+          <!-- 手绘高保真书桌 SVG -->
+          <svg viewBox="0 0 200 150" class="desk-svg">
+            <polygon points="15,45 185,45 180,55 20,55" fill="#B3651F"/>
+            <polygon points="10,35 190,35 185,45 15,45" fill="#ECA248"/>
+            <polygon points="15,25 185,25 190,35 10,35" fill="#F8BC64"/>
+            <rect x="25" y="45" width="10" height="70" fill="#B3651F"/>
+            <rect x="25" y="45" width="4" height="70" fill="#984A12"/>
+            <rect x="160" y="45" width="10" height="70" fill="#B3651F"/>
+            <rect x="160" y="45" width="4" height="70" fill="#984A12"/>
+            <polygon points="25,45 165,45 160,75 30,75" fill="#ECA248"/>
+            <polygon points="30,72 160,72 160,75 30,75" fill="#CC7D2C"/>
+            <rect x="80" y="55" width="30" height="5" rx="2" fill="#B3651F"/>
+            <rect x="25" y="55" width="12" height="65" fill="#ECA248"/>
+            <rect x="25" y="55" width="4" height="65" fill="#F8BC64"/>
+            <rect x="153" y="55" width="12" height="65" fill="#ECA248"/>
+            <rect x="153" y="55" width="4" height="65" fill="#F8BC64"/>
+          </svg>
+
+        </div>
+      </div>
+
+      <!-- 右侧书页 -->
+      <div class="page right">
+        <!-- 书签 -->
+        <div class="bookmark">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+          </svg>
+        </div>
+        <!-- 还原英文拼写错误细节 -->
+        <div class="question-text">This is a butterfiy</div>
+      </div>
+
+      <!-- 拟真中缝 -->
+      <div class="spine"></div>
+      <div class="spine-bottom"></div>
+
+    </div>
+  </div>
+
+  <!-- 底部判断按钮 -->
+  <div class="actions-area">
+    
+    <!-- 对钩按钮外壳 -->
+    <div class="action-btn-wrapper correct-wrap" id="wrap-correct">
+      <button class="action-btn btn-correct" id="btn-correct">
+        <svg viewBox="0 0 100 100" class="btn-sp btn-sp-1"><use href="#star-path"/></svg>
+        <svg viewBox="0 0 100 100" class="btn-sp btn-sp-2"><use href="#star-path"/></svg>
+        
+        <!-- 可爱表情对钩 SVG -->
+        <svg viewBox="0 0 100 60" class="icon-face">
+          <path d="M20,30 L40,50 L80,10 L70,5 L40,35 L30,25 Z" fill="#FFF" stroke="#FFF" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="43" cy="35" r="2.5" fill="#222"/>
+          <circle cx="55" cy="31" r="2.5" fill="#222"/>
+          <ellipse cx="38" cy="37" rx="3" ry="1.5" fill="#FF8BA7" opacity="0.8"/>
+          <ellipse cx="60" cy="33" rx="3" ry="1.5" fill="#FF8BA7" opacity="0.8"/>
+          <path d="M47,36 Q49,39 51,35" fill="none" stroke="#222" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- 叉号按钮外壳 -->
+    <div class="action-btn-wrapper wrong-wrap" id="wrap-wrong">
+      <button class="action-btn btn-wrong" id="btn-wrong">
+        <svg viewBox="0 0 100 100" class="btn-sp btn-sp-1"><use href="#star-path"/></svg>
+        <svg viewBox="0 0 100 100" class="btn-sp btn-sp-2"><use href="#star-path"/></svg>
+
+        <!-- 可爱表情叉号 SVG -->
+        <svg viewBox="0 0 80 80" class="icon-face">
+          <path d="M25,25 L55,55 M55,25 L25,55" fill="none" stroke="#FFF" stroke-width="18" stroke-linecap="round"/>
+          <circle cx="34" cy="40" r="2.5" fill="#222"/>
+          <circle cx="46" cy="40" r="2.5" fill="#222"/>
+          <ellipse cx="28" cy="42" rx="3" ry="1.5" fill="#FF8BA7" opacity="0.8"/>
+          <ellipse cx="52" cy="42" rx="3" ry="1.5" fill="#FF8BA7" opacity="0.8"/>
+          <path d="M38,42 Q40,45 42,42" fill="none" stroke="#222" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- 下一题按钮 -->
+  <button class="next-btn is-hidden" id="btn-next">
+    <svg viewBox="0 0 100 100" class="next-sp next-sp-1"><use href="#star-path"/></svg>
+    <svg viewBox="0 0 100 100" class="next-sp next-sp-2"><use href="#star-path"/></svg>
+    <span>下一题</span>
+    <svg viewBox="0 0 24 24">
+      <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+    </svg>
+  </button>
+
+  <!-- AI生成水印 -->
+  <div class="watermark">AI生成</div>
+
+</div>
+
+<script>
+  const wrapCorrect = document.getElementById('wrap-correct');
+  const wrapWrong = document.getElementById('wrap-wrong');
+  const btnCorrect = document.getElementById('btn-correct');
+  const btnWrong = document.getElementById('btn-wrong');
+  const btnNext = document.getElementById('btn-next');
+  const appContainer = document.getElementById('app');
+
+  // 创建酷炫粒子喷射效果
+  function createBurst(e, isCorrect) {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const containerRect = appContainer.getBoundingClientRect();
+    
+    // 计算点击在核心容器中的相对中心坐标
+    const centerX = rect.left + rect.width / 2 - containerRect.left;
+    const centerY = rect.top + rect.height / 2 - containerRect.top;
+
+    const particleCount = 12; // 粒子数量
+    const colors = isCorrect ? ['#FFF', '#FFD238', '#6FFF6F'] : ['#FFF', '#26FFF6', '#FF5252'];
+
+    for (let i = 0; i < particleCount; i++) {
+      const svgNS = "http://www.w3.org/2000/svg";
+      const particle = document.createElementNS(svgNS, "svg");
+      particle.setAttribute("viewBox", "0 0 100 100");
+      particle.classList.add("click-particle");
+      
+      // 随机分配颜色类别
+      if (i % 3 === 1) particle.classList.add("particle-star-gold");
+      if (i % 3 === 2) particle.classList.add("particle-star-cyan");
+
+      const useElement = document.createElementNS(svgNS, "use");
+      useElement.setAttributeNS("http://www.w3.org/1999/xlink", "href", "#star-path");
+      particle.appendChild(useElement);
+
+      // 粒子尺寸随机化
+      const size = (Math.random() * 1.5 + 1.0).toFixed(2); // vw
+      particle.style.width = `${size}vw`;
+      particle.style.height = `${size}vw`;
+
+      // 初始定位在按钮中心
+      particle.style.left = `${centerX}px`;
+      particle.style.top = `${centerY}px`;
+
+      // 计算随机爆炸方向和距离 (使用 CSS 变量传给动画)
+      const angle = (Math.random() * 360) * (Math.PI / 180);
+      const distance = Math.random() * 8 + 5; // vw
+      const dx = `${(Math.cos(angle) * distance).toFixed(2)}vw`;
+      const dy = `${(Math.sin(angle) * distance).toFixed(2)}vw`;
+      
+      particle.style.setProperty('--dx', dx);
+      particle.style.setProperty('--dy', dy);
+
+      // 动画随机延迟，增加层次感
+      particle.style.animationDelay = `${(Math.random() * 0.1).toFixed(2)}s`;
+
+      appContainer.appendChild(particle);
+
+      // 动画结束后自动移除销毁
+      particle.addEventListener('animationend', () => {
+        particle.remove();
+      });
+    }
+  }
+
+  // 统一的选中逻辑处理
+  function handleSelect(selectedWrap, dimmedWrap, isCorrect, event) {
+    // 1. 如果已经选中，则不再重复触发
+    if (selectedWrap.classList.contains('is-selected')) return;
+
+    // 2. 切换状态类名
+    selectedWrap.classList.remove('is-dimmed');
+    selectedWrap.classList.add('is-selected');
+    
+    dimmedWrap.classList.remove('is-selected');
+    dimmedWrap.classList.add('is-dimmed');
+
+    // 3. 产生酷炫粒子群爆发
+    createBurst(event, isCorrect);
+
+    // 4. 激活右下角“下一题”的点击状态
+    btnNext.classList.remove('is-hidden');
+  }
+
+  // 绑定点击事件
+  btnCorrect.addEventListener('click', (e) => {
+    handleSelect(wrapCorrect, wrapWrong, true, e);
+  });
+
+  btnWrong.addEventListener('click', (e) => {
+    handleSelect(wrapWrong, wrapCorrect, false, e);
+  });
+
+  // 点击“下一题”恢复初始未选择状态
+  btnNext.addEventListener('click', () => {
+    wrapCorrect.classList.remove('is-selected', 'is-dimmed');
+    wrapWrong.classList.remove('is-selected', 'is-dimmed');
+    btnNext.classList.add('is-hidden');
+  });
+</script>
+
+</body>
+</html>

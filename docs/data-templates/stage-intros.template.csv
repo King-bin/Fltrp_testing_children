@@ -1,0 +1,7 @@
+stage_no,pack_type,stage_key,name,intro_audio,intro_text,background_image,ip_asset,duration_ms
+1,base,forest_gate,第一关 森林大门,assets/vo/stage1-intro.mp3,第一关，打开森林之门。小动物守护着森林大门。想要进入森林，需要完成下面的听音任务。,assets/images/stage1-intro-bg.png,assets/ip/ip-stage1.webp,2500
+2,base,puzzle_camp,第二关 拼图营地,assets/vo/stage2-intro.mp3,第二关，大声说出咒语。想知道宝藏地点，需要大声说出咒语，把破碎的藏宝图拼完整。,assets/images/stage2-intro-bg.png,assets/ip/ip-stage2.webp,2500
+3,base,spirit_valley,第三关 精灵谷,assets/vo/stage3-intro.mp3,第三关，破解精灵谜题。想要拿到宝藏，需要完成下面的任务，破解精灵谜题。,assets/images/stage3-intro-bg.png,assets/ip/ip-stage3.webp,2500
+4,advanced,color_garden,第四关 彩绘园,assets/vo/stage4-intro.mp3,听音彩绘，点亮魔法花园。,assets/images/stage4-intro-bg.png,assets/ip/ip-stage4.webp,2500
+5,advanced,forest_theater,第五关 森林剧场,assets/vo/stage5-intro.mp3,看图说话，开启森林剧场。,assets/images/stage5-intro-bg.png,assets/ip/ip-stage5.webp,2500
+6,advanced,treasure_final,第六关 宝藏终点,assets/vo/stage6-intro.mp3,终极判定，破解绘本谜题。,assets/images/stage6-intro-bg.png,assets/ip/ip-stage6.webp,3000

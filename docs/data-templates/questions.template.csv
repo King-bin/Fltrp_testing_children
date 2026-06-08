@@ -1,0 +1,10 @@
+question_id,stage_no,sort_order,group_id,type,variant,prompt_text,item_audio,vo_audio,main_image,option_json,answer_json,level_tag,score
+Q001,1,1,G_STAGE1_AUDIO_JUDGE,binary_judge,audio_image_judge,,assets/audio/q001.mp3,,assets/images/q001-cat.png,"[{""key"":""true"",""label"":""✓""},{""key"":""false"",""label"":""×""}]","{""correct"":""true""}",K1,1
+Q002,1,2,G_STAGE1_AUDIO_JUDGE,binary_judge,audio_only_judge,,assets/audio/q002.mp3,,,"[{""key"":""true"",""label"":""✓""},{""key"":""false"",""label"":""×""}]","{""correct"":""false""}",K1,1
+Q009,2,1,G_STAGE2_REPEAT,voice_record,listen_repeat,Listen and repeat.,assets/audio/q009.mp3,,assets/images/q009-word.png,"[]","{""mockScore"":80,""passScore"":60}",K2,1
+Q010,2,2,G_STAGE2_IMAGE_REPEAT,voice_record,image_repeat,Look and repeat.,assets/audio/q010.mp3,,assets/images/q010-picture.png,"[]","{""mockScore"":82,""passScore"":60}",K2,1
+Q015,3,1,G_STAGE3_SELECT_AUDIO,selection,listen_choose_image,,assets/audio/q015.mp3,,,"[{""key"":""A"",""image"":""assets/images/q015-a.png""},{""key"":""B"",""image"":""assets/images/q015-b.png""},{""key"":""C"",""image"":""assets/images/q015-c.png""}]","{""correct"":""B""}",K2,1
+Q023,4,1,G_STAGE4_COLOR,coloring,instruction_coloring,Colour the flower pink.,assets/audio/q023.mp3,,assets/svg/q023-coloring.svg,"[{""key"":""pink"",""color"":""#FF8BC7""},{""key"":""black"",""color"":""#222222""},{""key"":""yellow"",""color"":""#FFD84D""}]","{""requiredColors"":{""flower"":""#FF8BC7""}}",K3,1
+Q030,5,1,G_STAGE5_SPEAK,voice_record,image_speaking,What do you see?,assets/audio/q030.mp3,,assets/images/q030-scene.png,"[]","{""mockScore"":85,""passScore"":60}",K3,1
+Q031,6,1,G_STAGE6_BOOK_JUDGE,binary_judge,picture_book_judge,The rabbit is sleeping.,assets/audio/q031.mp3,,assets/images/q031-book.png,"[{""key"":""true"",""label"":""✓""},{""key"":""false"",""label"":""×""}]","{""correct"":""true""}",K3,1
+Q032,6,2,G_STAGE6_BOOK_JUDGE,binary_judge,picture_book_judge,The bear has a red ball.,assets/audio/q032.mp3,,assets/images/q032-book.png,"[{""key"":""true"",""label"":""✓""},{""key"":""false"",""label"":""×""}]","{""correct"":""false""}",K3,1

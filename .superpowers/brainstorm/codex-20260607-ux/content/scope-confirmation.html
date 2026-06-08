@@ -1,0 +1,33 @@
+<h2>先确认第一期 H5 的开发范围</h2>
+<p class="subtitle">我已读到：强制横屏 H5、后续嵌入微信小程序、首页/地图/关卡/题型/完成页素材、4 类题型、登录与学段采集、音频/录音桥接、后台配置与报告。下面三种路线会影响我们接下来写规格和实现计划的粒度。</p>
+
+<div class="options">
+  <div class="option" data-choice="mvp-flow" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>推荐：H5 MVP 可跑测评流程</h3>
+      <p>用现有素材先做一个横屏 H5：首页、地图、关卡导言、基础包答题、80% 分流、完成页；题目数据用本地 mock，接口层预留给后端和小程序嵌入。</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="ui-prototype" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>UI 高保真演示优先</h3>
+      <p>重点还原效果图和题型组件视觉，做可点击演示，不急着完成真实测评状态机、录音上传、分流结算和断点恢复。</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="production-foundation" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>生产底座优先</h3>
+      <p>一开始就按正式工程搭建：登录、权限、AudioService、接口适配、缓存、埋点、异常弹窗、小程序 WebView 桥接都纳入第一期，视觉还原同步推进。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>我当前的初步判断</h3>
+  <p>A 最适合作为第一阶段：能尽快把已有 UI 资产变成可体验产品，同时不会把后端、报告、后台和语音引擎的不确定性全压到第一版里。B 太像样机，后续返工风险高；C 更稳但周期会明显拉长。</p>
+</div>

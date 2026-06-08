@@ -1,0 +1,15 @@
+asset_id,type,path,owner_ref,description,required
+IMG_Q001,image,assets/images/q001-cat.png,Q001,Q001主图,true
+AUD_Q001,audio,assets/audio/q001.mp3,Q001,Q001题干音频,true
+INTRO_STAGE1,audio,assets/vo/stage1-intro.mp3,STAGE_1,第一关关卡页导言音频,true
+INTRO_STAGE2,audio,assets/vo/stage2-intro.mp3,STAGE_2,第二关关卡页导言音频,true
+INTRO_STAGE3,audio,assets/vo/stage3-intro.mp3,STAGE_3,第三关关卡页导言音频,true
+INTRO_STAGE4,audio,assets/vo/stage4-intro.mp3,STAGE_4,第四关关卡页导言音频,true
+INTRO_STAGE5,audio,assets/vo/stage5-intro.mp3,STAGE_5,第五关关卡页导言音频,true
+INTRO_STAGE6,audio,assets/vo/stage6-intro.mp3,STAGE_6,第六关关卡页导言音频,true
+GROUP_VO_STAGE1_AUDIO,audio,assets/vo/groups/stage1-audio-judge.mp3,G_STAGE1_AUDIO_JUDGE,第一关听音判断组首题VO,true
+GROUP_VO_STAGE2_REPEAT,audio,assets/vo/groups/stage2-repeat.mp3,G_STAGE2_REPEAT,第二关跟读组首题VO,true
+GROUP_VO_STAGE3_SELECT,audio,assets/vo/groups/stage3-listen-select.mp3,G_STAGE3_SELECT_AUDIO,第三关听音选图组首题VO,true
+GROUP_VO_STAGE6_BOOK,audio,assets/vo/groups/stage6-book-judge.mp3,G_STAGE6_BOOK_JUDGE,第六关绘本判断组首题VO,true
+SVG_Q023,svg,assets/svg/q023-coloring.svg,Q023,Q023涂色线稿,true
+IMG_Q030,image,assets/images/q030-scene.png,Q030,Q030看图说话主图,true

@@ -1,0 +1,10 @@
+group_id,stage_no,group_order,name,group_vo_audio,group_vo_text,play_on_first_question_only
+G_STAGE1_AUDIO_JUDGE,1,1,第一关听音判断组,assets/vo/groups/stage1-audio-judge.mp3,听一听，判断声音和图片是不是好朋友。,true
+G_STAGE1_TEXT_JUDGE,1,2,第一关图文判断组,assets/vo/groups/stage1-text-judge.mp3,看一看，判断图片和文字是不是一样。,true
+G_STAGE2_REPEAT,2,1,第二关跟读组,assets/vo/groups/stage2-repeat.mp3,听一听，再大声跟着说出来。,true
+G_STAGE2_IMAGE_REPEAT,2,2,第二关看图跟读组,assets/vo/groups/stage2-image-repeat.mp3,看图片，跟着读出这个单词。,true
+G_STAGE3_SELECT_AUDIO,3,1,第三关听音选图组,assets/vo/groups/stage3-listen-select.mp3,听一听，从图片里选出正确答案。,true
+G_STAGE3_SELECT_TEXT,3,2,第三关看词选图组,assets/vo/groups/stage3-word-select.mp3,看单词，选出对应的图片。,true
+G_STAGE4_COLOR,4,1,第四关涂色组,assets/vo/groups/stage4-coloring.mp3,轮到你创作啦，请根据语音指令给图片涂色。,true
+G_STAGE5_SPEAK,5,1,第五关看图说话组,assets/vo/groups/stage5-speaking.mp3,看一看图片，说说你看到了什么。,true
+G_STAGE6_BOOK_JUDGE,6,1,第六关绘本判断组,assets/vo/groups/stage6-book-judge.mp3,看绘本故事，判断说法对不对。,true

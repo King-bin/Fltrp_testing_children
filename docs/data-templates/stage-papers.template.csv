@@ -1,0 +1,7 @@
+paper_id,pack_type,stage_no,name,question_ids,enabled
+PAPER_BASE_A1_STAGE1,base,1,基础包A1第一关,"Q001,Q002",true
+PAPER_BASE_A1_STAGE2,base,2,基础包A1第二关,"Q009,Q010",true
+PAPER_BASE_A1_STAGE3,base,3,基础包A1第三关,"Q015,Q016",true
+PAPER_ADV_B1_STAGE4,advanced,4,增强包B1第四关,"Q023",true
+PAPER_ADV_B1_STAGE5,advanced,5,增强包B1第五关,"Q030",true
+PAPER_ADV_B1_STAGE6,advanced,6,增强包B1第六关,"Q031,Q032",true
